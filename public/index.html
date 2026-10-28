@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sportello Lamentele</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#eef0ea; --sheet:#fbfbf7; --ink:#1d2a44; --muted:#5d6577; --rule:#c9cdc2;
+  --stamp:#c2321f; --stamp-soft:#c2321f1a; --ok:#2f7a4a; --warn:#b07a12; --focus:#3b5bd6;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#14171d; --sheet:#1c2028; --ink:#e4e6ea; --muted:#9aa1b0; --rule:#323845;
+  --stamp:#ff6a52; --stamp-soft:#ff6a5222; --ok:#5fc28a; --warn:#e2ac45; --focus:#8aa2ff; color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding:28px 16px 60px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:28px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+header.head{display:grid;gap:10px;border-bottom:3px double var(--ink);padding-bottom:18px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,60px);line-height:.95;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--stamp)}
+.sub{margin:0;color:var(--muted);max-width:62ch}
+.sla{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.sla span{font-family:var(--mono);font-size:12px;border:1px solid var(--rule);background:var(--sheet);padding:4px 8px;border-radius:3px}
+.sla b{color:var(--stamp);font-weight:600}
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.form{background:var(--sheet);border:1px solid var(--rule);padding:20px;display:grid;gap:14px;position:relative}
+.form h2,.queue h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0}
+.modno{font-family:var(--mono);font-size:11px;color:var(--muted);position:absolute;top:10px;right:14px}
+label{display:grid;gap:5px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.hint{font-weight:400;text-transform:none;letter-spacing:0;font-size:12px}
+input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:9px 10px;width:100%;text-transform:none;letter-spacing:0;font-weight:400}
+textarea{min-height:110px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.row2{grid-template-columns:1fr}}
+.check{display:flex;gap:8px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:13px;color:var(--ink)}
+.check input{width:auto;margin-top:3px}
+button{font:inherit;cursor:pointer;border-radius:3px}
+.btn{background:var(--ink);color:var(--sheet);border:0;padding:11px 14px;font-weight:600}
+.btn:hover{filter:brightness(1.15)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.ghost{background:transparent;border:1px solid var(--rule);color:var(--ink);padding:6px 10px;font-size:13px}
+.ghost:hover{border-color:var(--ink)}
+.note{font-size:13px;color:var(--muted);margin:0}
+.err{color:var(--stamp);font-size:13px;margin:0}
+.queue{display:grid;gap:14px;min-width:0}
+#list{display:grid;gap:14px}
+.qhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid var(--rule);color:var(--muted);padding:5px 10px;font-size:13px}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.adminbar{font-family:var(--mono);font-size:12px;background:var(--stamp-soft);color:var(--stamp);padding:8px 10px;border-left:3px solid var(--stamp);display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.ticket{background:var(--sheet);border:1px solid var(--rule);padding:16px 18px;display:grid;gap:10px;position:relative;overflow:hidden;min-width:0}
+.tmeta{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:12px;color:var(--muted);padding-right:130px}
+.tmeta .num{color:var(--ink);font-weight:600}
+.ticket h3{margin:0;font-size:18px;font-weight:600;padding-right:130px;overflow-wrap:anywhere}
+.ticket p.body{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;max-width:68ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--rule);padding:2px 7px;border-radius:2px}
+.chip.p-crit{border-color:var(--stamp);color:var(--stamp)}
+.chip.p-alta{border-color:var(--warn);color:var(--warn)}
+.stamp{position:absolute;top:14px;right:12px;transform:rotate(-8deg);font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--stamp);border:2.5px solid var(--stamp);border-radius:4px;padding:3px 8px;max-width:130px;text-align:center;line-height:1.1;opacity:.88}
+.stamp.s-risolto{color:var(--ok);border-color:var(--ok)}
+.stamp.s-lavorazione{color:var(--warn);border-color:var(--warn)}
+.thread{display:grid;gap:8px;border-top:1px dashed var(--rule);padding-top:10px}
+.reply{background:var(--paper);border-left:3px solid var(--ink);padding:8px 12px;display:grid;gap:2px}
+.reply .who{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.reply .txt{white-space:pre-wrap;overflow-wrap:anywhere}
+.nore{font-size:13px;color:var(--muted);font-style:italic}
+.tactions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sollec{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.admin{display:grid;gap:8px;background:var(--stamp-soft);padding:10px;border-radius:3px}
+.canned{display:flex;flex-wrap:wrap;gap:6px}
+.canned button{background:var(--sheet);border:1px dashed var(--rule);color:var(--ink);font-size:12px;padding:4px 8px}
+.admin .r{display:flex;flex-wrap:wrap;gap:8px}
+.admin select{width:auto;flex:1 1 200px}
+.empty{background:var(--sheet);border:1px dashed var(--rule);padding:22px;display:grid;gap:12px}
+.empty .ex{opacity:.75;pointer-events:none}
+.exlabel{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--stamp)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--sheet);padding:10px 16px;border-radius:3px;font-size:14px;max-width:min(92vw,480px);z-index:20;box-shadow:0 6px 24px #0004}
+footer{font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+footer .login{display:flex;gap:6px;align-items:center}
+footer .login input{width:160px;padding:5px 8px;font-size:13px}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;font-family:var(--mono);font-size:11px;padding:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="eyebrow"><span>Ufficio Relazioni con il Pubblico</span><span>Livello di supporto: −1</span><span id="clock">Protocollo aperto</span></div>
+    <h1>Sportello <em>Lamentele</em> &amp; Richieste Varie</h1>
+    <p class="sub">Vuoi parlarmi? Non scrivermi. Apri un ticket. Verrà protocollato, valutato, ignorato con cura e infine, forse, evaso.</p>
+    <div class="sla">
+      <span>Tempo medio di risposta: <b>3–5 ere geologiche</b></span>
+      <span>Orari sportello: <b>mar 11:00–11:07</b></span>
+      <span>Soddisfazione clienti: <b>dato riservato</b></span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form class="form" id="f" novalidate>
+      <span class="modno">Mod. 27/bis-R</span>
+      <h2>Apri un ticket</h2>
+      <label for="name">Il tuo nome <span class="hint">Facoltativo. L'anonimato non ti salverà.</span>
+        <input id="name" maxlength="40" placeholder="Es. Collega del terzo piano">
+      </label>
+      <label for="subj">Oggetto
+        <input id="subj" maxlength="120" placeholder="Es. La stampante mi guarda male" required>
+      </label>
+      <div class="row2">
+        <label for="cat">Categoria
+          <select id="cat">
+            <option>Bug nella mia vita</option>
+            <option>Richiesta caffè</option>
+            <option>Riunione che poteva essere una mail</option>
+            <option>Richiesta ferie (lol)</option>
+            <option>Complimenti (rari)</option>
+            <option>Lamentela generica</option>
+            <option>Altro / non so</option>
+          </select>
+        </label>
+        <label for="prio">Priorità
+          <select id="prio">
+            <option value="bassa">Bassa</option>
+            <option value="media" selected>Media</option>
+            <option value="alta">Alta</option>
+            <option value="crit">Critica (secondo te)</option>
+          </select>
+        </label>
+      </div>
+      <label for="desc">Descrizione <span class="hint">Più è lunga, meno verrà letta.</span>
+        <textarea id="desc" maxlength="2000" placeholder="Descrivi il problema. Passi per riprodurlo. Stato d'animo."></textarea>
+      </label>
+      <label class="check" for="spento"><input type="checkbox" id="spento"> Ho già provato a spegnere e riaccendere</label>
+      <label class="check" for="gdpr"><input type="checkbox" id="gdpr"> Accetto che questo ticket venga letto ad alta voce durante la pausa pranzo</label>
+      <p class="err" id="ferr" hidden></p>
+      <button class="btn" id="send" type="submit">Protocolla il ticket</button>
+      <p class="note">Inviando dichiari che il problema non è colpa tua. Verificheremo.</p>
+    </form>
+
+    <section class="queue" aria-labelledby="qh">
+      <div class="qhead">
+        <h2 id="qh">Coda pratiche</h2>
+        <div class="tabs" role="group" aria-label="Filtro">
+          <button id="t-all" aria-pressed="true">Tutti</button>
+          <button id="t-open" aria-pressed="false">Ancora vivi</button>
+          <button id="t-mine" aria-pressed="false">I miei</button>
+        </div>
+      </div>
+      <div class="adminbar" id="adminbar" hidden>
+        <span>Modalità Ufficio attiva: sei tu quello che risponde. Buona fortuna.</span>
+        <button class="ghost" id="logout" type="button">Esci</button>
+      </div>
+      <div id="list"><div class="empty"><p class="note">Caricamento dell'archivio cartaceo in corso…</p></div></div>
+    </section>
+  </div>
+
+  <footer>
+    <span>Questo sportello non fornisce garanzie di alcun tipo. Ogni ticket è trattato con la massima serietà, che è poca.</span>
+    <span class="login" id="loginbox">
+      <button class="linkbtn" id="showlogin" type="button">Sono l'Ufficio</button>
+      <input id="adminkey" type="password" placeholder="Parola d'ordine" hidden>
+      <button class="ghost" id="dologin" type="button" hidden>Entra</button>
+    </span>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+const STATI = {
+  aperto:{label:"Aperto",cls:""}, letto:{label:"Letto e ignorato",cls:""},
+  lavorazione:{label:"In lavorazione (forse)",cls:"s-lavorazione"},
+  feature:{label:"Non è un bug, è una feature",cls:""}, macchina:{label:"Da me funziona",cls:""},
+  risolto:{label:"Risolto",cls:"s-risolto"}, rifiutato:{label:"Respinto con gioia",cls:""}
+};
+const CHIUSI=["risolto","rifiutato","feature","macchina"];
+const PRIO={bassa:"Bassa",media:"Media",alta:"Alta",crit:"Critica (secondo te)"};
+const CANNED=[
+  "Hai provato a spegnerlo e riaccenderlo?",
+  "Ticket inoltrato all'ufficio competente (il cestino).",
+  "Ne parliamo alla prossima riunione. Ah no, la riunione è stata annullata.",
+  "Preso in carico. Il carico è pesante, ci vorrà un po'.",
+  "Non riesco a riprodurre il problema. Il problema sei tu?",
+  "Approvato. Scherzo."
+];
+const SOLLECITO_TOASTS=[
+  "Sollecito registrato. Priorità abbassata di conseguenza.",
+  "Sollecito ricevuto. Il tuo ticket è stato spostato in fondo con affetto.",
+  "Grazie per la pazienza che chiaramente non hai.",
+  "Sollecito archiviato nella cartella 'Ansia'."
+];
+const OK_TOASTS=[
+  "Ticket protocollato. Sei il n° %n in coda.",
+  "Ricevuto. Un timbro è stato apposto con grande solennità.",
+  "Ticket inviato. Ora aspetta. Ancora. Di più."
+];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const fmt=t=>{try{return new Date(t).toLocaleString("it-IT",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});}catch(e){return "";}};
+const ls={get:k=>{try{return localStorage.getItem(k);}catch(e){return null;}},set:(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}},del:k=>{try{localStorage.removeItem(k);}catch(e){}}};
+
+let clientId=ls.get("sportello.clientId");
+if(!clientId){ clientId=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now()); ls.set("sportello.clientId",clientId); }
+let adminKey=ls.get("sportello.adminKey")||"";
+let isAdmin=false, tickets=[], filter="all";
+$("name").value=ls.get("sportello.name")||"";
+
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,3600);}
+
+(function tick(){const d=new Date();const open=d.getDay()===2&&d.getHours()===11&&d.getMinutes()<8;
+  $("clock").textContent=open?"Sportello APERTO (sbrigati)":"Sportello chiuso · torna martedì alle 11";setTimeout(tick,30000);})();
+
+async function api(path,opts={}){
+  const headers={"Content-Type":"application/json"};
+  if(adminKey) headers["x-admin-key"]=adminKey;
+  const r=await fetch(path,{...opts,headers:{...headers,...(opts.headers||{})}});
+  let data=null; try{data=await r.json();}catch(e){}
+  if(!r.ok) throw new Error((data&&data.error)||"Errore "+r.status);
+  return data;
+}
+
+function exampleTicket(){
+  return `<span class="exlabel">Esempio · non è un ticket vero</span>
+  <div class="ticket ex" aria-hidden="true">
+    <div class="stamp">Letto e ignorato</div>
+    <div class="tmeta"><span class="num">INC-0004812</span><span>12 ott, 09:14</span><span>da Un Collega</span></div>
+    <h3>Il microonde del terzo piano emette giudizio</h3>
+    <div class="chips"><span class="chip">Bug nella mia vita</span><span class="chip p-crit">Critica (secondo te)</span></div>
+    <p class="body">Ogni volta che scaldo il pranzo fa un bip che sembra un sospiro.</p>
+    <div class="thread"><div class="reply"><span class="who">Risposta dell'Ufficio</span><span class="txt">Hai provato a spegnerlo e riaccenderlo?</span></div></div>
+  </div>`;
+}
+
+function render(){
+  const list=$("list");
+  const vis=tickets.filter(t=>filter==="open"?!CHIUSI.includes(t.status):filter==="mine"?t.mine:true);
+  if(!vis.length){
+    const msg=filter==="mine"?"Non hai ancora aperto ticket. Beato te.":filter==="open"?"Nessun ticket ancora vivo. Sospetto.":"Nessun ticket in coda. L'Ufficio si gode un raro momento di pace. Usa il modulo per rovinarglielo.";
+    list.innerHTML=`<div class="empty"><p class="note">${esc(msg)}</p>${filter==="all"?exampleTicket():""}</div>`;
+    return;
+  }
+  const drafts={}; list.querySelectorAll("textarea[id^='rt-']").forEach(ta=>{if(ta.value)drafts[ta.id]=ta.value;});
+  const focused=document.activeElement&&document.activeElement.id;
+  list.innerHTML=vis.map(t=>{
+    const st=STATI[t.status]||STATI.aperto;
+    const msgs=Array.isArray(t.messages)?t.messages:[];
+    const pc=t.priority==="crit"?"p-crit":t.priority==="alta"?"p-alta":"";
+    const thread=msgs.length?msgs.map(m=>`<div class="reply"><span class="who">Risposta dell'Ufficio · ${esc(fmt(m.at))}</span><span class="txt">${esc(m.text)}</span></div>`).join(""):`<span class="nore">Nessuna risposta. L'Ufficio sta riflettendo profondamente.</span>`;
+    const mineBtn=(t.mine&&!CHIUSI.includes(t.status))?`<button class="ghost" data-sollecita="${esc(t.id)}">Sollecita</button>`:"";
+    const admin=isAdmin?`
+      <div class="admin">
+        <div class="canned">${CANNED.map((c,i)=>`<button type="button" data-canned="${i}" data-for="${esc(t.id)}">${esc(c)}</button>`).join("")}</div>
+        <textarea id="rt-${esc(t.id)}" placeholder="Rispondi con la dovuta indifferenza…" style="min-height:70px"></textarea>
+        <div class="r">
+          <select id="rs-${esc(t.id)}" aria-label="Stato">${Object.entries(STATI).map(([k,v])=>`<option value="${k}" ${k===(t.status||"aperto")?"selected":""}>${esc(v.label)}</option>`).join("")}</select>
+          <button class="btn" data-reply="${esc(t.id)}">Timbra e invia</button>
+          <button class="ghost" data-del="${esc(t.id)}">Archivia nel cestino</button>
+        </div>
+      </div>`:"";
+    return `<article class="ticket">
+      <div class="stamp ${st.cls}">${esc(st.label)}</div>
+      <div class="tmeta"><span class="num">${esc(t.num)}</span><span>${esc(fmt(t.createdAt))}</span><span>da ${esc(t.mine?"te":t.name)}</span></div>
+      <h3>${esc(t.subject)}</h3>
+      <div class="chips"><span class="chip">${esc(t.category)}</span><span class="chip ${pc}">${esc(PRIO[t.priority]||"Media")}</span>${t.spento?`<span class="chip">Già spento e riacceso</span>`:""}</div>
+      ${t.body?`<p class="body">${esc(t.body)}</p>`:""}
+      <div class="thread">${thread}</div>
+      ${(mineBtn||t.solleciti)?`<div class="tactions">${mineBtn}${t.solleciti?`<span class="sollec">Solleciti: ${t.solleciti} · effetto: nessuno</span>`:""}</div>`:""}
+      ${admin}
+    </article>`;
+  }).join("");
+  Object.entries(drafts).forEach(([id,v])=>{const ta=document.getElementById(id);if(ta)ta.value=v;});
+  if(focused&&focused.startsWith("rt-")){const ta=document.getElementById(focused);if(ta)ta.focus();}
+}
+
+async function load(){
+  try{ tickets=await api("/api/tickets?clientId="+encodeURIComponent(clientId)); render(); }
+  catch(e){ if(!tickets.length) $("list").innerHTML=`<div class="empty"><p class="err">L'archivio non risponde. Riprova tra poco.</p></div>`; }
+}
+
+[["t-all","all"],["t-open","open"],["t-mine","mine"]].forEach(([id,f])=>{
+  $(id).addEventListener("click",()=>{filter=f;["t-all","t-open","t-mine"].forEach(x=>$(x).setAttribute("aria-pressed",x===id?"true":"false"));render();});
+});
+
+$("f").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const err=$("ferr"); err.hidden=true;
+  const subject=$("subj").value.trim();
+  if(!subject){err.textContent="Manca l'oggetto. Anche la burocrazia ha dei limiti.";err.hidden=false;$("subj").focus();return;}
+  if(!$("gdpr").checked){err.textContent="Devi accettare la lettura ad alta voce. È obbligatorio, l'ha deciso un comitato.";err.hidden=false;return;}
+  const btn=$("send"); btn.disabled=true; btn.textContent="Timbratura in corso…";
+  ls.set("sportello.name",$("name").value.trim());
+  try{
+    await api("/api/tickets",{method:"POST",body:JSON.stringify({
+      subject,category:$("cat").value,priority:$("prio").value,body:$("desc").value.trim(),
+      spento:$("spento").checked,name:$("name").value.trim(),clientId})});
+    $("subj").value="";$("desc").value="";$("spento").checked=false;$("gdpr").checked=false;
+    toast(pick(OK_TOASTS).replace("%n",(4000+Math.floor(Math.random()*900)).toLocaleString("it-IT")));
+    load();
+  }catch(x){err.textContent=x.message;err.hidden=false;}
+  finally{btn.disabled=false;btn.textContent="Protocolla il ticket";}
+});
+
+$("list").addEventListener("click",async e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.canned!==undefined){const ta=$("rt-"+b.dataset.for);if(ta){ta.value=CANNED[+b.dataset.canned];ta.focus();}return;}
+  if(b.dataset.sollecita){
+    try{await api(`/api/tickets/${b.dataset.sollecita}/sollecita`,{method:"POST",body:JSON.stringify({clientId})});toast(pick(SOLLECITO_TOASTS));load();}
+    catch(x){toast(x.message);}
+    return;
+  }
+  if(b.dataset.reply){
+    const id=b.dataset.reply, ta=$("rt-"+id), text=(ta.value||"").trim();
+    b.disabled=true; ta.value="";
+    try{await api(`/api/tickets/${id}/reply`,{method:"POST",body:JSON.stringify({status:$("rs-"+id).value,text})});toast("Timbrato. Il cliente sarà (in)soddisfatto.");load();}
+    catch(x){ta.value=text;toast(x.message);}
+    finally{b.disabled=false;}
+    return;
+  }
+  if(b.dataset.del){
+    if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Sicuro? Clicca di nuovo";setTimeout(()=>{if(b.isConnected){b.dataset.armed="";b.textContent="Archivia nel cestino";}},4000);return;}
+    try{await api(`/api/tickets/${b.dataset.del}`,{method:"DELETE"});toast("Ticket archiviato nel cestino. Nessuno saprà.");load();}
+    catch(x){toast(x.message);}
+  }
+});
+
+// login admin
+function setAdmin(on){ isAdmin=on; $("adminbar").hidden=!on; $("loginbox").hidden=on; render(); }
+async function checkAdmin(){
+  if(!adminKey) return setAdmin(false);
+  try{await api("/api/admin/check");setAdmin(true);}catch(e){adminKey="";ls.del("sportello.adminKey");setAdmin(false);}
+}
+$("showlogin").addEventListener("click",()=>{$("adminkey").hidden=false;$("dologin").hidden=false;$("showlogin").hidden=true;$("adminkey").focus();});
+async function doLogin(){
+  adminKey=$("adminkey").value; $("adminkey").value="";
+  try{await api("/api/admin/check");ls.set("sportello.adminKey",adminKey);setAdmin(true);toast("Benvenuto, Ufficio. Il caffè è finito.");}
+  catch(e){adminKey="";toast("Parola d'ordine sbagliata. Apri un ticket per recuperarla.");}
+}
+$("dologin").addEventListener("click",doLogin);
+$("adminkey").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();doLogin();}});
+$("logout").addEventListener("click",()=>{adminKey="";ls.del("sportello.adminKey");setAdmin(false);});
+
+checkAdmin().then(load);
+setInterval(()=>{ if(!document.hidden) load(); },8000);
+})();
+</script>
+</body>
+</html>
